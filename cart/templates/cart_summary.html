@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<header class="bg-info py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Shopping Cart</h1>
+            <p class="lead fw-normal text-dark-50 mb-0">"Your Garden Cart: Ready to Bloom with Goodies!" 🌼🛒</p>
+        </div>
+    </div>
+</header> 
+
+    <br/><br/>
+    <div class="container">
+        {% if cart_products %}
+
+        {% for product in cart_products%}
+        <div class="card mb-6">
+            <div class="row g-10">
+              <div class="col-md-3">
+                <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="...">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <center>
+                  <h5 class="card-title">{{ product.name }}</h5>
+                  <p class="card-text">{{ product.description }}</p>
+                  
+                  {% if product.is_sale %}
+                  
+                  <strike>₹ {{ product.price }}</strike>
+                  &nbsp;
+                 ₹{{ product.sale_price }}
+                  
+                  {% else %}
+                  ₹{{ product.price }}
+                  
+                  {% endif %}
+                  <div class="row justify-content-center">
+                    <div class="col-md-2">Quantity</div>
+                    <div class="col-md-2"> 
+                  <select class="form-select form-select-sm" id="select{{product.id}}">
+
+                    {% for key, value in quantities.items %}
+                    {% if key == product.id|slugify %} 
+                    <!-- our value is string and product.id is int so we use [slugify] for compare-->
+                    <option select>{{ value }}</option>
+                    {% endif %}
+                    {% endfor %}
+                    
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>  
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
+                </div>
+              </div>
+                  
+                <br/><br>
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <a href="{% url 'home'%}" class="btn btn-secondary">Home</a>
+                <button type="button" data-index="{{product.id}}" class="btn btn-info update-cart">Update</button>
+
+                <button type="button" data-index="{{product.id}}" class="btn btn-danger delete-product">Remove</button>
+
+              </center>
+          
+            </div>
+          </div>
+         </div>
+         
+        </div>
+          
+ {% endfor %}
+ <br/>
+ 
+<h4 class="total-wrapper"><i>Total:</i>₹{{totals}}</h4>
+
+ <!---h4><i>Total:</i>₹{{totals}}</h4-->
+ 
+ {% else %}
+
+ <h1 style="color:Violet"> 🌿 Your plant card is like a garden waiting to bloom! Let's plant some seeds 🌿....</h1>
+ {% endif %}
+
+</div>
+
+<br/><br/><br/><br/>
+
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+
+<script>
+  // chech if button pressed
+   
+$(document).on('click', '.update-cart', function(e){
+  e.preventDefault();
+  var productid = $(this).data("index");
+    
+  $.ajax ({
+      
+    type:'POST',
+      
+    url: "{% url 'cart_update' %}",
+      
+    data: {
+        // use # to select the id of element in html page this line id not a produt  id ( <button type="button" value="{{ product.id }}" class="btn btn-secondary" id="add-cart">add to cart</button>)
+      product_id: $(this).data('index'),
+      product_qty: $( '#select'+productid+' option:selected').text(),
+        
+      csrfmiddlewaretoken: '{{ csrf_token }}',
+        
+      action: 'post'
+      
+    },
+     
+    success: function(json){
+     //console.log(json)
+     //document.getElementById("cart_quantity").
+     //textContent = json.qty
+
+     location.reload();
+ 
+    },
+
+    error: function(xhr, errmsg, err){
+
+
+    }
+
+
+  });
+
+
+})
+
+
+//delete product from cart
+
+$(document).on('click', '.delete-product', function(e){
+  e.preventDefault();
+  //var productid = $(this).data("index");
+    
+  $.ajax ({
+      
+    type:'POST',
+      
+    url: "{% url 'cart_delete' %}",
+      
+    data: {
+        // use # to select the id of element in html page this line id not a produt  id ( <button type="button" value="{{ product.id }}" class="btn btn-secondary" id="add-cart">add to cart</button>)
+      product_id: $(this).data('index'),
+
+        
+      csrfmiddlewaretoken: '{{ csrf_token }}',
+        
+      action: 'post'
+      
+    },
+     
+    success: function(json){
+     //console.log(json)
+     //document.getElementById("cart_quantity").
+     //textContent = json.qty
+
+     location.reload();
+ 
+    },
+
+    error: function(xhr, errmsg, err){
+
+
+    }
+
+
+  });
+
+
+})
+</script>
+
+</script>
+
+
+{% endblock %}
+

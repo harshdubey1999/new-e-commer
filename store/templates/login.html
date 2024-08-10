@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<!doctype html>
+<html>
+<head>
+    <img scr=home/harsh/ecom/media/images.jpeg >
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    
+</head>
+<body>
+    <header class="bg-info -5 text-dark">
+    <!--header class="bg-MediumSeaGreenpy -5"-->
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">login<h1/>
+                <p class="lead fw-narmal text-dark-50 mb-0">log in to your account...</p>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="row">
+          <div class="col-md-6 offset-md-3 text-center">
+            <form method="POST" action="{% url 'login' %}">
+              {% csrf_token %}
+              <div class="form-group">
+                <input type="text" class="form-control" name="username" placeholder="User Name" id="username">
+                <small class="form-text text-muted">We'll never share your username with anyone else</small>
+              </div>
+              <div class="form-group">
+                <input type="password" class="form-control" name="password" placeholder="Password" id="password">
+                <small id="passwordHelp" class="form-text-muted">We'll never share your password with anyone else</small>
+              </div>
+              <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+              </div>
+              <button type="submit" class="btn btn-secondary">login</button>
+            </form>
+          </div>
+        </div>
+      </div>
+        
+    
+            
+                <div class="col-8">
+                    <br/><br/>
+                    <br/><br/>
+                    <br/><br/>
+                    <br/><br/>
+                    <br/><br/>
+                </div>
+            </center>
+        </div>
+    </div>
+</body>
+</html>
+
+{% endblock %}
